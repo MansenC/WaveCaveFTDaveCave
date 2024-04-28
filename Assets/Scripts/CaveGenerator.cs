@@ -302,6 +302,8 @@ public class CaveGenerator : MonoBehaviour
             CaveHull hull = _hulls[hullIndex];
 
             GameObject wallObject = new GameObject("CaveWall");
+            wallObject.transform.parent = _caveRoot.transform;
+
             LineSegment[] segments = hull.Segments;
 
             int validSegments = hullIndex == 0 ? segments.Length - 1 : segments.Length;
@@ -388,6 +390,7 @@ public class CaveGenerator : MonoBehaviour
         meshFilter.mesh = targetMesh;
 
         caveMeshPart.AddComponent<MeshRenderer>().material = _caveForegroundMaterial;
+        caveMeshPart.AddComponent<PolygonCollider2D>().points = contour.Select(x => new Vector2(x.Position.X, x.Position.Y)).ToArray();
     }
 
     private void GenerateInnerHullMeshes()
@@ -397,10 +400,10 @@ public class CaveGenerator : MonoBehaviour
             TesselateMesh(_hulls[i], _caveForegroundMaterial, 4.5f);
         }
 
-        TesselateMesh(_hulls[0], _caveBackgroundMaterial, 5f);
+        TesselateMesh(_hulls[0], _caveBackgroundMaterial, 5f, generateCollider: false);
     }
 
-    private void TesselateMesh(in CaveHull hull, Material targetMaterial, float zLayer)
+    private void TesselateMesh(in CaveHull hull, Material targetMaterial, float zLayer, bool generateCollider = true)
     {
         LineSegment[] segments = hull.Segments;
 
@@ -435,6 +438,12 @@ public class CaveGenerator : MonoBehaviour
         meshFilter.mesh = targetMesh;
 
         caveMeshPart.AddComponent<MeshRenderer>().material = targetMaterial;
+        if (!generateCollider)
+        {
+            return;
+        }
+
+        caveMeshPart.AddComponent<PolygonCollider2D>().points = contour.Select(x => new Vector2(x.Position.X, x.Position.Y)).ToArray();
     }
 
     private bool BuildCaveHulls()
