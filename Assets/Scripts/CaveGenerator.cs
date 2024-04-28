@@ -391,6 +391,7 @@ public class CaveGenerator : MonoBehaviour
 
         caveMeshPart.AddComponent<MeshRenderer>().material = _caveForegroundMaterial;
         caveMeshPart.AddComponent<PolygonCollider2D>().points = contour.Select(x => new Vector2(x.Position.X, x.Position.Y)).ToArray();
+        caveMeshPart.layer = 6;
     }
 
     private void GenerateInnerHullMeshes()
@@ -444,6 +445,7 @@ public class CaveGenerator : MonoBehaviour
         }
 
         caveMeshPart.AddComponent<PolygonCollider2D>().points = contour.Select(x => new Vector2(x.Position.X, x.Position.Y)).ToArray();
+        caveMeshPart.layer = 6;
     }
 
     private bool BuildCaveHulls()

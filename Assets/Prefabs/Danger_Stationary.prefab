@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 797888379348483202}
   - component: {fileID: 3588556214617956836}
   - component: {fileID: 2487119032195805995}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Danger_Stationary
   m_TagString: Untagged
   m_Icon: {fileID: 0}

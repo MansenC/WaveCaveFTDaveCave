@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class BruceTalksAtYou : MonoBehaviour
@@ -23,19 +22,30 @@ public class BruceTalksAtYou : MonoBehaviour
     [SerializeField]
     private string interruptionMessage = "Ah, nevermind that.";
 
+    [SerializeField, Space(10)]
+    private List<string> randomSentences = new List<string>();
+    [SerializeField]
+    private float timeIdleBeforeRandomMin = 7;
+    [SerializeField]
+    private float timeIdleBeforeRandomMax = 20;
+
     private Coroutine buildTextRoutine;
     private Coroutine interruptAndNewRoutine;
+    private Coroutine idleRoutine;
 
     private void Awake()
     {
         instance = this;
-        gameObject.SetActive(false);
+        gameObject.SetActive(false);        
+    }
+
+    private void Start()
+    {
+        RestartIdleRoutine();
     }
 
     public static void TriggerMessage(string message)
     {
-        instance.gameObject.SetActive(true);
-
         if (isTalking)
         {
             instance.ShowNewMessage(message);
@@ -48,6 +58,11 @@ public class BruceTalksAtYou : MonoBehaviour
 
     private void ShowMessage(string text)
     {
+        if (!DaveController.Instance.canMove)
+            return;
+
+        instance.gameObject.SetActive(true);
+
         if (buildTextRoutine != null)
             StopCoroutine(buildTextRoutine);
         buildTextRoutine = StartCoroutine(BuildMessage(text));
@@ -55,6 +70,11 @@ public class BruceTalksAtYou : MonoBehaviour
 
     private void ShowNewMessage(string message)
     {
+        if (!DaveController.Instance.canMove)
+            return;
+
+        instance.gameObject.SetActive(true);
+
         if (interruptAndNewRoutine != null)
             StopCoroutine(interruptAndNewRoutine);
 
@@ -78,6 +98,8 @@ public class BruceTalksAtYou : MonoBehaviour
         yield return new WaitForSeconds(delayBeforeHide);
         isTalking = false;
         gameObject.SetActive(false);
+
+        RestartIdleRoutine();
 
         buildTextRoutine = null;
     }
@@ -119,7 +141,29 @@ public class BruceTalksAtYou : MonoBehaviour
             yield return new WaitForSeconds(pauseBetweenLetters);
             scrollView.verticalNormalizedPosition = 0;
         }
+    }
 
+    private void RestartIdleRoutine()
+    {
+        if (idleRoutine != null)
+            StopCoroutine(idleRoutine);
 
+        idleRoutine = DaveController.Instance.StartCoroutine(RandomAfterIdle());
+    }
+
+    private IEnumerator RandomAfterIdle()
+    {
+        var wait = Random.Range(timeIdleBeforeRandomMin, timeIdleBeforeRandomMax);
+        yield return new WaitForSeconds(wait);
+
+        idleRoutine = null;
+        DoRandomMessage();
+    }
+
+    private void DoRandomMessage()
+    {
+        int randomIndex = Random.Range(0, randomSentences.Count);
+
+        ShowMessage(randomSentences[randomIndex]);
     }
 }

@@ -44,6 +44,13 @@ public class DaveController : MonoBehaviour
     [SerializeField]
     private InputActionAsset actionAsset;
 
+    [SerializeField, Space(10)]
+    private Button respawnButton;
+    [SerializeField]
+    private Transform respawnPoint;
+    [SerializeField]
+    private GameObject deathScreen;
+
     private Rigidbody2D rb;
     private Animator anim;
 
@@ -94,6 +101,7 @@ public class DaveController : MonoBehaviour
         CurrentsManager.currentsStarted += EnablePushByCurrents;
         CurrentsManager.sourceSpawned += SetCurrentsSource;
 
+        respawnButton.onClick.AddListener(OnButtonRespawn);
     }
 
     private void OnDisable()
@@ -102,6 +110,20 @@ public class DaveController : MonoBehaviour
 
         CurrentsManager.currentsStarted -= EnablePushByCurrents;
         CurrentsManager.sourceSpawned -= SetCurrentsSource;
+
+        respawnButton.onClick.RemoveAllListeners();
+    }
+
+    private void OnButtonRespawn()
+    {
+        canMove = true;
+        canRotate = true;
+
+        deathScreen.SetActive(false);
+        anim.SetBool("pulledIn", false);
+        currentHP = maxHP;
+        BuildHPBar();
+        transform.position = respawnPoint.transform.position;
     }
 
     public void TakeDamage(int damage)
@@ -114,7 +136,7 @@ public class DaveController : MonoBehaviour
         {
             canMove = false;
             canRotate = false;
-            //show some kind of death screen
+            deathScreen.SetActive(true);
         }
     }
 

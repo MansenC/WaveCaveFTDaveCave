@@ -34,6 +34,9 @@ public class GrapplingHook : MonoBehaviour
 
     private void OnDownActivateGrapple(InputAction.CallbackContext context)
     {
+        if (!DaveController.Instance.canMove)
+            return;
+
         Vector3 screenPos = Mouse.current.position.ReadValue();
         screenPos.z = Mathf.Abs(Camera.main.transform.position.z);
         var mousePos = Camera.main.ScreenToWorldPoint(screenPos);
