@@ -93,6 +93,9 @@ public class CaveGenerator : MonoBehaviour
     private Material _caveForegroundMaterial = null;
 
     [SerializeField]
+    private Material _caveWallMaterial = null;
+
+    [SerializeField]
     private float _uvTiling = 5f;
 
     [SerializeField]
@@ -286,7 +289,63 @@ public class CaveGenerator : MonoBehaviour
         // We then generate all hulls first for the inner meshes
         GenerateInnerHullMeshes();
         GenerateOuterHullMesh();
+
+        GenerateCaveWalls(4.5f, 5f);
+
         return true;
+    }
+
+    private void GenerateCaveWalls(float wallZStart, float wallZEnd)
+    {
+        for (int hullIndex = 0; hullIndex < _hulls.Count; hullIndex++)
+        {
+            CaveHull hull = _hulls[hullIndex];
+
+            GameObject wallObject = new GameObject("CaveWall");
+            LineSegment[] segments = hull.Segments;
+
+            int validSegments = hullIndex == 0 ? segments.Length - 1 : segments.Length;
+            Vector3[] vertices = new Vector3[2 * segments.Length];
+            int[] tris = new int[3 * vertices.Length];
+            Vector2[] uvs = new Vector2[vertices.Length];
+
+            for (int i = 0; i < validSegments; i++)
+            {
+                Vector3 startSegment = segments[i].Origin;
+                int endSegment = i == validSegments - 1 && hullIndex != 0 ? 0 : i + 1;
+
+                vertices[2 * i] = new Vector3(startSegment.x, startSegment.y, wallZStart);
+                vertices[2 * i + 1] = new Vector3(startSegment.x, startSegment.y, wallZEnd);
+                uvs[2 * i] = new Vector2(startSegment.x, wallZStart);
+                uvs[2 * i + 1] = new Vector2(startSegment.x, wallZEnd);
+
+                tris[6 * i + 0] = 2 * i;
+                tris[6 * i + 1] = 2 * endSegment;
+                tris[6 * i + 2] = 2 * endSegment + 1;
+                tris[6 * i + 3] = 2 * endSegment + 1;
+                tris[6 * i + 4] = 2 * i + 1;
+                tris[6 * i + 5] = 2 * i;
+            }
+
+            if (hullIndex == 0)
+            {
+                Vector3 startSegment = segments[validSegments].Origin;
+                vertices[2 * validSegments] = new Vector3(startSegment.x, startSegment.y, wallZStart);
+                vertices[2 * validSegments + 1] = new Vector3(startSegment.x, startSegment.y, wallZEnd);
+                uvs[2 * validSegments] = new Vector2(startSegment.x, wallZStart);
+                uvs[2 * validSegments + 1] = new Vector2(startSegment.x, wallZEnd);
+            }
+
+            Mesh targetMesh = new()
+            {
+                vertices = vertices,
+                triangles = tris,
+                uv = uvs,
+            };
+
+            wallObject.AddComponent<MeshFilter>().sharedMesh = targetMesh;
+            wallObject.AddComponent<MeshRenderer>().material = _caveWallMaterial;
+        }
     }
 
     private void GenerateOuterHullMesh()

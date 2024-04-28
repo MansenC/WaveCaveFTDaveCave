@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5821491027985889454
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4427551161848208848}
+  - component: {fileID: 5955759105708618792}
+  m_Layer: 0
+  m_Name: CaveBoi
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4427551161848208848
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5821491027985889454}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5955759105708618792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5821491027985889454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c17539a662e89c24a831bc4be4275620, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentSeed: 66
+  _maxBranchAngle: 60
+  _minimumAngleDifference: 30
+  _minNodeDistance: 10
+  _maxNodeDistance: 15
+  _maxGraphLength: 100
+  _branchDistribution:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 1.5
+      inSlope: -1.7234174
+      outSlope: -1.7234174
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.18996672
+    - serializedVersion: 3
+      time: 0.9
+      value: 0.1
+      inSlope: -4.7078075
+      outSlope: -4.7078075
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.47078598
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _branchVariance: 1.5
+  _forceBranchDistance: 0.4
+  _nodeMergeThreshold: 2
+  _caveWidth: 2
+  _segmentOverlap: 0
+  _verticesPerSegment: 10
+  _caveBackgroundMaterial: {fileID: 2100000, guid: 909f8c714fa193a4cb2b1f1a8fdcba6b, type: 2}
+  _caveForegroundMaterial: {fileID: 2100000, guid: 3b279552f5ce7bf42a553b17cd70ce14, type: 2}
+  _uvTiling: 5
+  _regenerate: 1
+  _iterationLimit: 1500

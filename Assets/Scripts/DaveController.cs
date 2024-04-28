@@ -59,6 +59,7 @@ public class DaveController : MonoBehaviour
     private float currentsActiveForce;
     private bool currentsAwayFromSource;
     private Vector3 currentsSourcePos;
+    private Vector3 defaultScale;
 
 
     private void Awake()
@@ -72,6 +73,8 @@ public class DaveController : MonoBehaviour
             Destroy(this.gameObject);
             Debug.LogError("DaveController Singleton Error");
         }
+
+        defaultScale = transform.localScale;
 
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -238,14 +241,14 @@ public class DaveController : MonoBehaviour
 
         if (mousePos.x < transform.position.x)
         {
-            transform.localScale = new Vector3(-1, 1, 1);
+            transform.localScale = new Vector3(-defaultScale.x, defaultScale.y, defaultScale.z);
             //transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             //transform.Rotate(new Vector3(0, 0, 180));
             transform.right = -mouseDirection;
         }
         else
         {
-            transform.localScale = Vector3.one;
+            transform.localScale = defaultScale;
             //transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             transform.right = mouseDirection;
         }
