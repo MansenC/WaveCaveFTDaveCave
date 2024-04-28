@@ -15,7 +15,6 @@ public class SuccArea : MonoBehaviour
         if (!collision.gameObject.CompareTag("Player"))
             return;
 
-        Debug.Log("Succing");
         DaveController.Instance.PushDirectionally(transform.position.x, -2, succForce);
     }
 }

@@ -18,6 +18,11 @@ public class FallingRockDanger : Danger
 
     private bool isActive = true;
 
+    private void Awake()
+    {
+        succCol.enabled = false;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (isActive)
@@ -39,6 +44,7 @@ public class FallingRockDanger : Danger
         rb.gravityScale = fallGravity;
         rb.WakeUp();
         pSystem.Play();
+        succCol.enabled = true;
     }
 
     //Subscribe to UnityEvent on Deactivation object
